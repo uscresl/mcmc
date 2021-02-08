@@ -182,7 +182,7 @@ mcmc::mala_int(const arma::vec& initial_vals, arma::mat& draws_out, std::functio
 #ifdef MCMC_USE_OPENMP
         #pragma omp parallel for
 #endif
-        for (size_t jj = 0; jj < n_draws_keep; jj++) {
+        for (int jj = 0; jj < static_cast<int>(n_draws_keep); jj++) {
             draws_out.row(jj) = arma::trans(inv_transform(draws_out.row(jj).t(), bounds_type, lower_bounds, upper_bounds));
         }
     }

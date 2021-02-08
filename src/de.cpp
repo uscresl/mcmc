@@ -85,7 +85,7 @@ mcmc::de_int(const arma::vec& initial_vals, arma::cube& draws_out, std::function
 #ifdef MCMC_USE_OPENMP
     #pragma omp parallel for
 #endif
-    for (size_t i=0; i < n_pop; i++)
+    for (int i=0; i < static_cast<int>(n_pop); i++)
     {
         X.row(i) = par_initial_lb.t() + (par_initial_ub.t() - par_initial_lb.t())%arma::randu(1,n_vals);
 
@@ -108,7 +108,7 @@ mcmc::de_int(const arma::vec& initial_vals, arma::cube& draws_out, std::function
     
     for (size_t j=0; j < n_gen + n_burnin; j++) 
     {
-        double temperature_j = de_cooling_schedule(j,n_gen);
+        double temperature_j = de_cooling_schedule(j,static_cast<int>(n_gen));
         
         if (jumps && ((j+1) % 10 == 0)) {
             par_gamma_run = par_gamma_jump;
@@ -117,7 +117,7 @@ mcmc::de_int(const arma::vec& initial_vals, arma::cube& draws_out, std::function
 #ifdef MCMC_USE_OPENMP
         #pragma omp parallel for
 #endif
-            for (size_t i=0; i < n_pop; i++) {
+            for (int i=0; i < static_cast<int>(n_pop); i++) {
 
                 uint_t R_1, R_2;
 
@@ -176,8 +176,8 @@ mcmc::de_int(const arma::vec& initial_vals, arma::cube& draws_out, std::function
 #ifdef MCMC_USE_OPENMP
         #pragma omp parallel for
 #endif
-        for (size_t ii = 0; ii < n_gen; ii++) {
-            for (size_t jj = 0; jj < n_pop; jj++) {
+        for (int ii = 0; ii < static_cast<int>(n_gen); ii++) {
+            for (int jj = 0; jj < static_cast<int>(n_pop); jj++) {
                 draws_out.slice(ii).row(jj) = arma::trans(inv_transform(draws_out.slice(ii).row(jj).t(), bounds_type, lower_bounds, upper_bounds));
             }
         }

@@ -134,7 +134,7 @@ mcmc::aees_int(const arma::vec& initial_vals, arma::mat& draws_out, std::functio
 #ifdef MCMC_USE_OPENMP
         #pragma omp parallel for
 #endif
-        for (size_t j=1; j < K; j++) 
+        for (int j=1; j < static_cast<int>(K); j++) 
         {
             if (n > j*(n_initial_draws + n_burnin))
             {
